@@ -1,38 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Photo Gallery</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <h1>My Gallery</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="gallery.html" class="active">Gallery</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </header>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Photo Gallery</title>
+<style>
+:root {
+--gap: 12px;
+--thumb-size: 220px;
+--radius: 12px;
+}
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #fafafa; color: #111; }
+header { padding: 20px 16px; text-align: center; }
+header h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 40px); }
+nav a { margin: 0 10px; color: #0b70d1; text-decoration: none; }
+nav a.active { font-weight: 700; }
 
-  <main>
-    <section class="gallery">
-      <!-- Point directly to the files you uploaded (note: .JPG is uppercase) -->
-      <a href="DSC00106.JPG" target="_blank"><img src="DSC00106.JPG" alt="DSC00106" loading="lazy"></a>
-      <a href="DSC00148.JPG" target="_blank"><img src="DSC00148.JPG" alt="DSC00148" loading="lazy"></a>
-      <a href="DSC00157.JPG" target="_blank"><img src="DSC00157.JPG" alt="DSC00157" loading="lazy"></a>
-      <a href="DSC00172.JPG" target="_blank"><img src="DSC00172.JPG" alt="DSC00172" loading="lazy"></a>
-      <a href="DSC00195.JPG" target="_blank"><img src="DSC00195.JPG" alt="DSC00195" loading="lazy"></a>
-      <a href="DSC00201.JPG" target="_blank"><img src="DSC00201.JPG" alt="DSC00201" loading="lazy"></a>
-      <a href="DSC00341.JPG" target="_blank"><img src="DSC00341.JPG" alt="DSC00341" loading="lazy"></a>
-      <a href="DSC00343.JPG" target="_blank"><img src="DSC00343.JPG" alt="DSC00343" loading="lazy"></a>
-      <a href="DSC00358.JPG" target="_blank"><img src="DSC00358.JPG" alt="DSC00358" loading="lazy"></a>
-      <a href="DSC00428.JPG" target="_blank"><img src="DSC00428.JPG" alt="DSC00428" loading="lazy"></a>
-      <!-- Add more lines for more photos -->
-    </section>
-  </main>
 
-  <footer><small>© 2025 Diana Rodriguez</small></footer>
-</body>
+/* Masonry-like responsive grid */
+.gallery {
+max-width: 1300px;
+margin: 0 auto;
+padding: 0 16px 40px;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(var(--thumb-size), 1fr));
+gap: var(--gap);
+}
+.thumb {
+position: relative;
+overflow: hidden;
+border-radius: var(--radius);
+box-shadow: 0 8px 20px rgba(0,0,0,.12);
+cursor: zoom-in;
+background: #eee;
+aspect-ratio: 4 / 3; /* consistent thumbnails */
+}
+.thumb img {
+width: 100%; height: 100%; object-fit: cover; display: block;
+transition: transform .18s ease-out;
+}
+.thumb:hover img { transform: scale(1.04); }
+
+
+/* Lightbox */
+.lightbox {
+position: fixed; inset: 0; display: none; place-items: center;
+background: rgba(0,0,0,.88); z-index: 9999;
+}
+.lightbox.open { display: grid; }
+.lightbox img {
+max-width: 92vw; max-height: 86vh; border-radius: 14px;
+box-shadow: 0 10px 30px rgba(0,0,0,.6);
+}
+.lb-close, .lb-prev, .lb-next {
+position: absolute; top: 50%; transform: translateY(-50%);
+background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25);
+color: #fff; width: 42px; height: 42px; border-radius: 50%;
+display: grid; place-items: center; font-size: 20px; cursor: pointer;
+user-select: none; backdrop-filter: blur(4px);
+}
+.lb-close { top: 28px; right: 28px; transform: none; font-size: 22px; }
+.lb-prev { left: 24px; }
+.lb-next { right: 24px; }
+.lb-caption {
+position: absolute; left: 0; right: 0; bottom: 18px; text-align: center;
+color: #fff; font-size: 14px; opacity: .85;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+
+@media (max-width: 640px) {
+:root { --thumb-size: 150px; }
+.lb-prev, .lb-next { top: auto; bottom: 20px; transform: none; }
+.lb-prev { left: 20px; } .lb-next { right: 20px; }
 </html>
